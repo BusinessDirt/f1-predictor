@@ -8,9 +8,13 @@ import logging
 from typing import Union, List
 
 
+from Logger import Logger
+
+
 class API:
-    def __init__(self, cache_dir):
+    def __init__(self, logger: Logger, cache_dir: str):
         self.f1 = fastf1
+        self.log: Logger = logger
         self.cache_dir = cache_dir
 
         if not os.path.exists(self.cache_dir):
@@ -31,7 +35,9 @@ class API:
         schedule = self.get_event_schedule(year)
         for _, event in schedule.iterrows():
             if type(gp) is str:
-                if gp.lower() in event['EventName'].lower() or gp.lower() in event['Location'].lower():
+                if gp.lower() in event['EventName'].lower() or \
+                        gp.lower() in event['Location'].lower() or \
+                        gp.lower() in event['Country'].lower():
                     return True
             else:
                 if gp is event['RoundNumber']:
