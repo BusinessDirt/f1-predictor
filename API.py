@@ -3,10 +3,10 @@ import os
 import fastf1
 from fastf1.core import Session, DriverResult
 from fastf1.events import EventSchedule
+from fastf1.ergast import Ergast
 
 import logging
-from typing import Union, List
-
+from typing import Union, List, Optional, Literal
 
 from Logger import Logger
 
@@ -14,6 +14,7 @@ from Logger import Logger
 class API:
     def __init__(self, logger: Logger, cache_dir: str):
         self.f1 = fastf1
+        self.ergast = Ergast()
         self.log: Logger = logger
         self.cache_dir = cache_dir
 
@@ -44,6 +45,9 @@ class API:
                     return True
 
         return False
+
+    def get_constructor_standings(self, year: int):
+        return self.ergast.get_constructor_standings(year)
 
     @staticmethod
     def get_drivers(session: Session) -> List[DriverResult]:
